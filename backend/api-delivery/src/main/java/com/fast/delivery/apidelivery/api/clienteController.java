@@ -2,6 +2,7 @@ package com.fast.delivery.apidelivery.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,12 +51,12 @@ public class clienteController {
 	}
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente adicionarCliente(@RequestBody Cliente cliente) {
+	public Cliente adicionarCliente(@Valid @RequestBody Cliente cliente) {
 		return repository.save(cliente);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> atualizarCliente(@Valid @PathVariable Long id, @RequestBody Cliente cliente) {
 		if(!repository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
