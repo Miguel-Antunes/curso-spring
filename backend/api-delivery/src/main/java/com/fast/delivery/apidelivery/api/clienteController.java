@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fast.delivery.apidelivery.domain.model.Cliente;
 import com.fast.delivery.apidelivery.domain.repository.ClienteRepository;
+import com.fast.delivery.apidelivery.domain.service.CatalogoClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -26,6 +27,9 @@ public class clienteController {
 	
 	@Autowired
 	private ClienteRepository repository; 
+	
+	@Autowired
+	private CatalogoClienteService service;
 
 	@GetMapping
 	public List<Cliente> listarTodos() {
@@ -39,20 +43,11 @@ public class clienteController {
 		return repository.findById(id).map(
 				(cliente)-> ResponseEntity.ok(cliente))
 				.orElse(ResponseEntity.notFound().build());
-
-//		Optional<Cliente> cliente = clienteRepository.findById(id);
-//		if(cliente.isPresent()) {
-//			return ResponseEntity.ok(cliente.get());
-//		}
-//		else {
-//			return ResponseEntity.notFound().build();
-//		}
-		
 	}
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionarCliente(@Valid @RequestBody Cliente cliente) {
-		return repository.save(cliente);
+		return service.salvarCliente(cliente);
 	}
 	
 	@PutMapping("/{id}")
@@ -62,7 +57,7 @@ public class clienteController {
 		}
 		
 		cliente.setId(id);
-		cliente = repository.save(cliente);
+		cliente = service.salvarCliente(cliente);
 		
 		return ResponseEntity.ok(cliente);
 	}
@@ -71,7 +66,7 @@ public class clienteController {
 		if(!repository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		repository.deleteById(id);
+		service.deletarCliente(id);
 		return ResponseEntity.noContent().build();
 	}
 
