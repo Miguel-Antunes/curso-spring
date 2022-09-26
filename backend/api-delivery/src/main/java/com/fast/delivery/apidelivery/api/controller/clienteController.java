@@ -1,4 +1,4 @@
-package com.fast.delivery.apidelivery.api;
+package com.fast.delivery.apidelivery.api.controller;
 
 import java.util.List;
 

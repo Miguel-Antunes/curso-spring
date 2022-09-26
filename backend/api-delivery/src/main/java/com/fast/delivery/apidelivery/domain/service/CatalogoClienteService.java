@@ -21,9 +21,12 @@ public class CatalogoClienteService {
 		if(emailEmUso) {
 			throw new NegocioException("Já existe um cliente cadastrado com esse email!");
 		}
-			return clienteRepository.save(cliente);
-		
-				
+			return clienteRepository.save(cliente);		
+	}
+	@Transactional
+	public Cliente buscar(Long id){
+		return clienteRepository.findById(id)
+		.orElseThrow(()-> new NegocioException("Cliente não encontrado!"));
 	}
 	@Transactional
 	public void deletarCliente(Long id) {
