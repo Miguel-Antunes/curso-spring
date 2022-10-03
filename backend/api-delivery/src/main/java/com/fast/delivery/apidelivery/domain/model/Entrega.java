@@ -1,7 +1,8 @@
 package com.fast.delivery.apidelivery.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -11,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -19,7 +19,8 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.fast.delivery.apidelivery.domain.ValidationGroups;
-import com.fasterxml.jackson.annotation.JsonProperty;import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -56,10 +57,10 @@ public class Entrega {
 	private StatusEntrega statusEntrega;
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataPedido;
+	private OffsetDateTime dataPedido;
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataFinalizacao;
+	private OffsetDateTime dataFinalizacao;
 	
 
 }
