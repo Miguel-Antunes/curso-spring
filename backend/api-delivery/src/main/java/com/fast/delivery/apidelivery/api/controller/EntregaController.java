@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fast.delivery.apidelivery.api.model.DestinatarioModel;
+import com.fast.delivery.apidelivery.api.model.EntregaModel;
 import com.fast.delivery.apidelivery.domain.model.Entrega;
 import com.fast.delivery.apidelivery.domain.repository.EntregaRepository;
 import com.fast.delivery.apidelivery.domain.service.SolicitacaoEntregaService;
@@ -42,9 +44,24 @@ public class EntregaController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Entrega> buscarEntrega(@PathVariable Long id){
+	public ResponseEntity<EntregaModel> buscarEntrega(@PathVariable Long id){
 		return entregaRepository.findById(id)
-				.map((entrega)-> ResponseEntity.ok(entrega))
+				.map((entrega)->{
+					EntregaModel entregaModel = new EntregaModel();
+					entregaModel.setId(entrega.getId());
+					entregaModel.setNomeCliente(entrega.getCliente().getNome());
+					entregaModel.setDestinatario(new DestinatarioModel());
+					entregaModel.getDestinatario().setNome(entrega.getDestinatario().getNome());
+					entregaModel.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
+					entregaModel.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
+					entregaModel.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+					entregaModel.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
+					entregaModel.setTaxa(entrega.getTaxa());
+					entregaModel.setStatus(entrega.getStatusEntrega());
+					entregaModel.setDataPedido(entrega.getDataPedido());
+					entregaModel.setDataFinalizacao(entrega.getDataFinalizacao());
+					return ResponseEntity.ok(entregaModel);
+				})
 				.orElse(ResponseEntity.notFound().build());
 	}
 
